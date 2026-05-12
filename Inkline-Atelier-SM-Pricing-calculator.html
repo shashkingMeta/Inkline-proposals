@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>INKLINE ATELIER Package Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0910;
+  --surface: #110e1a;
+  --surface2: #18132a;
+  --surface3: #1f1935;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --gold: #c9a84c;
+  --gold2: #e8c97a;
+  --gold3: #f5e0a8;
+  --purple: #7b5ea7;
+  --purple2: #a07dc9;
+  --purple3: #c4a8e8;
+  --text: #f0ebff;
+  --muted: #9990b0;
+  --muted2: #b8b0cc;
+  --radius: 20px;
+  --radius-sm: 12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  padding:48px 20px 80px;
+  line-height:1.6;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 20% 0%, rgba(123,94,167,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 10%, rgba(201,168,76,0.10) 0%, transparent 60%);
+}
+.container{max-width:1340px;margin:auto}
+.hero{text-align:center;margin-bottom:60px;padding:0 20px}
+.hero-eyebrow{
+  display:inline-block;
+  font-size:0.78rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gold);padding:7px 20px;border:1px solid rgba(201,168,76,0.3);
+  border-radius:999px;margin-bottom:28px;background:rgba(201,168,76,0.05);
+}
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,6vw,5.5rem);font-weight:700;
+  line-height:1.05;letter-spacing:-1px;margin-bottom:18px;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold3) 50%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero p{max-width:680px;margin:0 auto;color:var(--muted2);font-size:1rem;font-weight:300;line-height:1.9}
+.divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:24px auto}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:24px;margin-bottom:48px}
+.tier-card{
+  position:relative;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:36px 30px 30px;cursor:pointer;
+  transition:all 0.35s ease;overflow:hidden;
+}
+.tier-card:hover{border-color:rgba(201,168,76,0.35);transform:translateY(-5px)}
+.tier-card.active{
+  border:1.5px solid var(--gold);
+  background:linear-gradient(160deg,rgba(123,94,167,0.12),var(--surface) 60%);
+  box-shadow:0 0 0 1px rgba(201,168,76,0.15),0 24px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(201,168,76,0.12);
+}
+.tier-badge{
+  position:absolute;top:20px;right:20px;
+  font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  padding:6px 14px;border-radius:999px;
+}
+.badge-starter{background:rgba(123,94,167,0.2);color:var(--purple3);border:1px solid rgba(123,94,167,0.3)}
+.badge-popular{background:rgba(201,168,76,0.15);color:var(--gold2);border:1px solid rgba(201,168,76,0.35)}
+.badge-elite{background:linear-gradient(135deg,rgba(201,168,76,0.2),rgba(123,94,167,0.2));color:var(--gold3);border:1px solid rgba(201,168,76,0.4)}
+.tier-name{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:700;margin-bottom:6px;max-width:85%;line-height:1.2}
+.tier-price{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--gold);margin-bottom:6px;line-height:1}
+.tier-price span{font-size:1rem;font-weight:400;color:var(--muted);font-family:'DM Sans',sans-serif}
+.tier-tagline{color:var(--muted);font-size:0.88rem;margin-bottom:24px;line-height:1.6}
+.tier-features{list-style:none;display:flex;flex-direction:column;gap:10px}
+.tier-features li{padding-left:20px;position:relative;color:var(--muted2);font-size:0.88rem;line-height:1.5}
+.tier-features li::before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.tier-btn{
+  width:100%;margin-top:24px;border:1px solid var(--gold);background:transparent;
+  color:var(--gold);font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.9rem;
+  padding:14px;border-radius:var(--radius-sm);cursor:pointer;transition:all 0.3s;letter-spacing:0.04em;
+}
+.tier-btn:hover,.tier-card.active .tier-btn{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0b0910;border-color:transparent;
+}
+.layout{display:grid;grid-template-columns:1.35fr 0.65fr;gap:24px;align-items:start}
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:36px;box-shadow:0 20px 60px rgba(0,0,0,0.35);
+}
+.card-heading{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;margin-bottom:6px}
+.card-sub{color:var(--muted);font-size:0.88rem;margin-bottom:28px}
+.del-table{width:100%;border-collapse:collapse;font-size:0.85rem}
+.del-table th{
+  text-align:left;padding:10px 14px;
+  font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;border-bottom:1px solid rgba(201,168,76,0.2);
+}
+.del-table th:not(:first-child){text-align:center}
+.del-table td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--muted2);vertical-align:middle;line-height:1.5}
+.del-table tr:last-child td{border-bottom:none}
+.del-table td:not(:first-child){text-align:center}
+.del-table .cat-row td{
+  padding-top:20px;padding-bottom:4px;
+  font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--purple3);font-weight:600;border-bottom:none;
+}
+.row-label{color:var(--text) !important;font-weight:400}
+.highlight-col{background:rgba(201,168,76,0.04)}
+.inc-pill{
+  display:inline-block;background:rgba(201,168,76,0.1);color:var(--gold2);
+  font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:999px;
+  border:1px solid rgba(201,168,76,0.2);white-space:nowrap;
+}
+.cross{color:rgba(255,255,255,0.2);font-size:1rem}
+.upgrades-section{margin-top:32px;border-top:1px solid var(--border);padding-top:28px}
+.upgrades-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;margin-bottom:20px}
+.upgrade-grid{display:grid;gap:16px}
+.upgrade-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px;transition:border-color 0.3s}
+.upgrade-item:hover{border-color:rgba(201,168,76,0.3)}
+.upgrade-row{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.upgrade-name{font-weight:600;font-size:0.92rem}
+.upgrade-tag{font-size:0.78rem;color:var(--gold);font-weight:500}
+.upgrade-desc{color:var(--muted);font-size:0.83rem;margin-bottom:14px;line-height:1.6}
+.upgrade-select{
+  width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border2);
+  background:var(--surface3);color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:0.88rem;cursor:pointer;outline:none;transition:border-color 0.3s,box-shadow 0.3s;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;
+}
+.upgrade-select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12)}
+.summary-card{position:sticky;top:24px}
+.summary-header{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:24px}
+.summary-package-name{
+  font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;
+  color:var(--gold2);margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);line-height:1.3;
+}
+.sum-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.sum-label{color:var(--muted);font-size:0.85rem}
+.sum-val{font-weight:600;font-size:0.9rem}
+.sum-total-block{margin-top:24px}
+.sum-total-label{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.sum-total{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--gold);letter-spacing:-1px;line-height:1}
+.sum-total span{font-size:1rem;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400}
+.addons-block{margin-top:28px}
+.addons-block h4{font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.addon-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.addon-item{
+  padding:10px 14px;border-radius:10px;background:rgba(201,168,76,0.05);
+  border:1px solid rgba(201,168,76,0.12);color:var(--muted2);font-size:0.82rem;line-height:1.5;
+}
+.no-addon{color:var(--muted);font-size:0.85rem;font-style:italic}
+.whatsapp-btn{
+  width:100%;margin-top:24px;border:none;
+  background:linear-gradient(135deg,#25D366,#128C5A);
+  color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.95rem;
+  padding:17px;border-radius:14px;cursor:pointer;transition:all 0.3s;letter-spacing:0.03em;
+}
+.whatsapp-btn:hover{transform:translateY(-3px);filter:brightness(1.08);box-shadow:0 12px 30px rgba(37,211,102,0.25)}
+.quote-note{text-align:center;margin-top:12px;font-size:0.78rem;color:var(--muted);font-style:italic}
+@media(max-width:1060px){.layout{grid-template-columns:1fr}.summary-card{position:relative;top:auto}}
+@media(max-width:768px){body{padding:28px 14px 60px}.card{padding:24px 18px}.tiers{grid-template-columns:1fr}.del-table{font-size:0.78rem}.del-table th,.del-table td{padding:9px 8px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Growth Marketing Packages</div>
+    <h1>Invest in <span>Results</span>,<br>Not Just Services</h1>
+    <div class="divider"></div>
+    <p>Choose a package built for where you're headed. Fully transparent pricing, customizable to your exact needs — no hidden costs, no surprises.</p>
+  </div>
+
+  <div class="tiers" id="tiersGrid">
+    <article class="tier-card active" data-key="starter">
+      <div class="tier-badge badge-starter">Starter</div>
+      <div class="tier-name">Growth Starter System</div>
+      <div class="tier-price">₹30,000<span> / month</span></div>
+      <p class="tier-tagline">New businesses building online presence</p>
+      <ul class="tier-features">
+        <li>10 Posts + 5 Reels / month</li>
+        <li>1 Professional Shoot</li>
+        <li>Instagram Management</li>
+        <li>Trend Intelligence Strategy</li>
+        <li>Weekly Strategy Calls</li>
+      </ul>
+      <button class="tier-btn">Select Package</button>
+    </article>
+    <article class="tier-card" data-key="growth">
+      <div class="tier-badge badge-popular">Most Popular</div>
+      <div class="tier-name">Growth &amp; Performance System</div>
+      <div class="tier-price">₹45,000<span> / month</span></div>
+      <p class="tier-tagline">Growing brands focused on leads &amp; performance</p>
+      <ul class="tier-features">
+        <li>15 Premium Posts + 9 Reels</li>
+        <li>2 Shoots + Meta &amp; Google Ads</li>
+        <li>Instagram + Facebook Management</li>
+        <li>1 Influencer Collaboration</li>
+        <li>Dedicated Account Manager</li>
+      </ul>
+      <button class="tier-btn">Select Package</button>
+    </article>
+    <article class="tier-card" data-key="elite">
+      <div class="tier-badge badge-elite">Elite</div>
+      <div class="tier-name">Elite Growth &amp; Brand Authority</div>
+      <div class="tier-price">₹70,000<span> / month</span></div>
+      <p class="tier-tagline">Established brands scaling aggressively</p>
+      <ul class="tier-features">
+        <li>20 Posts + 12 Premium Reels</li>
+        <li>Full Funnel Ads + PR Outreach</li>
+        <li>All Platforms incl. LinkedIn &amp; X</li>
+        <li>Multiple Influencer Collabs</li>
+        <li>Weekend Events + Brand Activations</li>
+      </ul>
+      <button class="tier-btn">Select Package</button>
+    </article>
+  </div>
+
+  <div class="layout">
+    <div class="card">
+      <div class="card-heading" id="cardHeading">Growth Starter System</div>
+      <p class="card-sub">Full deliverables breakdown — see exactly what's included at each tier and what you can upgrade.</p>
+
+      <div style="overflow-x:auto">
+        <table class="del-table">
+          <thead>
+            <tr>
+              <th style="width:34%">Deliverable</th>
+              <th style="width:22%">Starter<br><span style="font-size:0.68rem;opacity:0.7">₹30,000</span></th>
+              <th style="width:22%" class="highlight-col">Growth<br><span style="font-size:0.68rem;opacity:0.7">₹45,000</span></th>
+              <th style="width:22%">Elite<br><span style="font-size:0.68rem;opacity:0.7">₹70,000</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="cat-row"><td colspan="4">Content Production</td></tr>
+            <tr>
+              <td class="row-label">Posts (Static + Carousel)</td>
+              <td>10 / month</td>
+              <td class="highlight-col">15 Premium</td>
+              <td>20 Premium</td>
+            </tr>
+            <tr>
+              <td class="row-label">Reels</td>
+              <td>5 / month</td>
+              <td class="highlight-col">9 High-Quality</td>
+              <td>12 Premium</td>
+            </tr>
+            <tr>
+              <td class="row-label">Stories</td>
+              <td>Basic engagement</td>
+              <td class="highlight-col">Frequent engagement</td>
+              <td>Daily (sales + engagement)</td>
+            </tr>
+            <tr>
+              <td class="row-label">Professional Shoots</td>
+              <td>1 / month</td>
+              <td class="highlight-col">2 / month</td>
+              <td>3 Premium / month</td>
+            </tr>
+            <tr class="cat-row"><td colspan="4">Strategy &amp; Planning</td></tr>
+            <tr>
+              <td class="row-label">Trend Intelligence</td>
+              <td><span class="inc-pill">Included</span></td>
+              <td class="highlight-col">Advanced Strategy</td>
+              <td>Elite + Big Data</td>
+            </tr>
+            <tr>
+              <td class="row-label">Campaign Planning &amp; Execution</td>
+              <td><span class="cross">✕</span></td>
+              <td class="highlight-col">Monthly Campaign</td>
+              <td>Full Ecosystem + Calendar</td>
+            </tr>
+            <tr>
+              <td class="row-label">Content Calendar</td>
+              <td>Monthly</td>
+              <td class="highlight-col">Advanced Monthly</td>
+              <td>Strategic Elite-Level</td>
+            </tr>
+            <tr class="cat-row"><td colspan="4">Growth &amp; Paid Media</td></tr>
+            <tr>
+              <td class="row-label">Performance Ads (Meta + Google)</td>
+              <td><span class="cross">✕</span></td>
+              <td class="highlight-col">Setup &amp; Optimization</td>
+              <td>Full Funnel Management</td>
+            </tr>
+            <tr>
+              <td class="row-label">Influencer Marketing</td>
+              <td><span class="cross">✕</span></td>
+              <td class="highlight-col">1 Collab / month</td>
+              <td>Multiple + Management</td>
+            </tr>
+            <tr>
+              <td class="row-label">WhatsApp / Email Marketing</td>
+              <td><span class="cross">✕</span></td>
+              <td class="highlight-col">Setup Included</td>
+              <td>Full Automation + Funnel</td>
+            </tr>
+            <tr class="cat-row"><td colspan="4">Brand &amp; PR</td></tr>
+            <tr>
+              <td class="row-label">Multi-Platform Management</td>
+              <td>Instagram</td>
+              <td class="highlight-col">IG + Facebook</td>
+              <td>IG + FB + LinkedIn + X</td>
+            </tr>
+            <tr>
+              <td class="row-label">Community Engagement</td>
+              <td>Basic</td>
+              <td class="highlight-col">Active Support</td>
+              <td>High-Intensity</td>
+            </tr>
+            <tr>
+              <td class="row-label">PR &amp; Brand Visibility</td>
+              <td><span class="cross">✕</span></td>
+              <td class="highlight-col"><span class="cross">✕</span></td>
+              <td>PR Outreach + Authority</td>
+            </tr>
+            <tr>
+              <td class="row-label">Events / Activation</td>
+              <td><span class="cross">✕</span></td>
+              <td class="highlight-col"><span class="cross">✕</span></td>
+              <td>Weekend Events + Brand</td>
+            </tr>
+            <tr class="cat-row"><td colspan="4">Support &amp; Reporting</td></tr>
+            <tr>
+              <td class="row-label">Website Optimization</td>
+              <td>Basic Traffic Tracking</td>
+              <td class="highlight-col"><span class="cross">✕</span></td>
+              <td>UI/UX + Conversion Opt.</td>
+            </tr>
+            <tr>
+              <td class="row-label">Account Manager</td>
+              <td><span class="cross">✕</span></td>
+              <td class="highlight-col"><span class="inc-pill">Included</span></td>
+              <td>Dedicated + Priority</td>
+            </tr>
+            <tr>
+              <td class="row-label">Strategy Calls</td>
+              <td>Weekly</td>
+              <td class="highlight-col">Weekly</td>
+              <td>Weekly + Advanced Planning</td>
+            </tr>
+            <tr>
+              <td class="row-label">Reports &amp; Analytics</td>
+              <td>Monthly Report</td>
+              <td class="highlight-col">Bi-Monthly Insights</td>
+              <td>Dashboard + Weekly Review</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="upgrades-section">
+        <div class="upgrades-title">Customize Your Package</div>
+        <div class="upgrade-grid" id="upgradeGrid"></div>
+      </div>
+    </div>
+
+    <aside class="card summary-card">
+      <div class="summary-header">Package Summary</div>
+      <div class="summary-package-name" id="sumName">Growth Starter System</div>
+      <div class="sum-row">
+        <span class="sum-label">Base Price</span>
+        <span class="sum-val" id="sumBase">&#8377;30,000</span>
+      </div>
+      <div class="sum-row">
+        <span class="sum-label">Upgrade Add-ons</span>
+        <span class="sum-val" id="sumAddons">&#8377;0</span>
+      </div>
+      <div class="sum-total-block">
+        <div class="sum-total-label">Total Investment</div>
+        <div class="sum-total" id="sumTotal">&#8377;30,000<span> / month</span></div>
+      </div>
+      <div class="addons-block">
+        <h4>Selected Upgrades</h4>
+        <ul class="addon-list" id="addonList">
+          <li class="no-addon">No upgrades selected</li>
+        </ul>
+      </div>
+      <button class="whatsapp-btn" id="whatsappBtn">Continue on WhatsApp &#8594;</button>
+      <p class="quote-note">We'll send a detailed quote within 2 hours</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+const PACKAGES = {
+  starter: {
+    name: "Growth Starter System",
+    price: 30000,
+    upgrades: [
+      {id:"reels",name:"Reels Per Month",desc:"Scale your short-form video content for maximum reach.",options:[{label:"5 Reels — Included",price:0},{label:"9 Reels / month (+₹6,000)",price:6000},{label:"12 Reels / month (+₹12,000)",price:12000}]},
+      {id:"posts",name:"Posts & Carousels",desc:"Increase monthly brand touchpoints with premium content.",options:[{label:"10 Posts — Included",price:0},{label:"15 Premium Posts (+₹5,000)",price:5000},{label:"20 Premium Posts (+₹10,000)",price:10000}]},
+      {id:"shoots",name:"Professional Shoots",desc:"Elevate production quality and content freshness.",options:[{label:"1 Shoot — Included",price:0},{label:"2 Shoots / month (+₹8,000)",price:8000},{label:"3 Premium Shoots (+₹16,000)",price:16000}]},
+      {id:"ads",name:"Performance Ads",desc:"Add paid media to accelerate growth and lead generation.",options:[{label:"Not Included",price:0},{label:"Meta Ads Setup & Management (+₹10,000)",price:10000},{label:"Meta + Google Ads Full Setup (+₹18,000)",price:18000}]},
+      {id:"influencer",name:"Influencer Collaboration",desc:"Partner with relevant creators to expand your reach.",options:[{label:"Not Included",price:0},{label:"1 Influencer Collaboration (+₹8,000)",price:8000}]}
+    ]
+  },
+  growth: {
+    name: "Growth & Performance System",
+    price: 45000,
+    upgrades: [
+      {id:"reels",name:"Reels Per Month",desc:"Push beyond the 9-reel baseline for more reach.",options:[{label:"9 Reels — Included",price:0},{label:"12 Reels / month (+₹5,000)",price:5000},{label:"15 Premium Reels (+₹10,000)",price:10000}]},
+      {id:"posts",name:"Posts & Carousels",desc:"Scale content output for dominant feed presence.",options:[{label:"15 Posts — Included",price:0},{label:"20 Premium Posts (+₹5,000)",price:5000},{label:"25 Premium Posts (+₹9,000)",price:9000}]},
+      {id:"shoots",name:"Professional Shoots",desc:"Add a premium shoot for elevated visual content.",options:[{label:"2 Shoots — Included",price:0},{label:"3 Premium Shoots (+₹10,000)",price:10000},{label:"4 Premium Shoots (+₹18,000)",price:18000}]},
+      {id:"influencer",name:"Influencer Collabs",desc:"Scale influencer partnerships for compound growth.",options:[{label:"1 Collab — Included",price:0},{label:"2 Influencer Collabs (+₹10,000)",price:10000},{label:"3 Influencer Collabs (+₹18,000)",price:18000}]},
+      {id:"email",name:"WhatsApp / Email Automation",desc:"Upgrade from basic setup to full funnel automation.",options:[{label:"Basic Setup — Included",price:0},{label:"Full Funnel Automation (+₹8,000)",price:8000}]},
+      {id:"platforms",name:"Additional Platforms",desc:"Expand social presence beyond Instagram + Facebook.",options:[{label:"IG + Facebook — Included",price:0},{label:"Add LinkedIn (+₹5,000)",price:5000},{label:"Add LinkedIn + X (+₹9,000)",price:9000}]}
+    ]
+  },
+  elite: {
+    name: "Elite Growth & Brand Authority System",
+    price: 70000,
+    upgrades: [
+      {id:"reels",name:"Reels Per Month",desc:"Maximize reel output for algorithmic dominance.",options:[{label:"12 Reels — Included",price:0},{label:"16 Premium Reels (+₹8,000)",price:8000},{label:"20 Premium Reels (+₹15,000)",price:15000}]},
+      {id:"posts",name:"Posts & Carousels",desc:"Scale content for complete market saturation.",options:[{label:"20 Posts — Included",price:0},{label:"30 Premium Posts (+₹10,000)",price:10000},{label:"40 Premium Posts (+₹18,000)",price:18000}]},
+      {id:"shoots",name:"Professional Shoots",desc:"Increase premium content production frequency.",options:[{label:"3 Shoots — Included",price:0},{label:"4 Premium Shoots (+₹12,000)",price:12000},{label:"5 Premium Shoots (+₹22,000)",price:22000}]},
+      {id:"influencer",name:"Influencer Campaigns",desc:"Scale your influencer ecosystem for maximum authority.",options:[{label:"Multiple Collabs — Included",price:0},{label:"Dedicated Influencer Manager (+₹15,000)",price:15000}]},
+      {id:"events",name:"Events & Activations",desc:"Add exclusive brand activations beyond the standard.",options:[{label:"Weekend Activations — Included",price:0},{label:"Premium Event Execution (+₹20,000)",price:20000}]},
+      {id:"pr",name:"PR & Media Coverage",desc:"Amplify PR outreach with dedicated media buying.",options:[{label:"PR Outreach — Included",price:0},{label:"Media Buying + Press Coverage (+₹25,000)",price:25000}]}
+    ]
+  }
+};
+
+let activeKey = 'starter';
+
+function fmt(n){return '\u20B9' + n.toLocaleString('en-IN')}
+
+function renderUpgrades(){
+  const pkg = PACKAGES[activeKey];
+  const grid = document.getElementById('upgradeGrid');
+  grid.innerHTML = '';
+  pkg.upgrades.forEach(upg => {
+    const div = document.createElement('div');
+    div.className = 'upgrade-item';
+    div.innerHTML = '<div class="upgrade-row"><span class="upgrade-name">'+upg.name+'</span><span class="upgrade-tag">Upgrade Available</span></div><p class="upgrade-desc">'+upg.desc+'</p><select class="upgrade-select" data-id="'+upg.id+'">'+upg.options.map(o=>'<option value="'+o.price+'">'+o.label+'</option>').join('')+'</select>';
+    grid.appendChild(div);
+  });
+  document.querySelectorAll('.upgrade-select').forEach(s => s.addEventListener('change', updateSummary));
+  updateSummary();
+}
+
+function updateSummary(){
+  const pkg = PACKAGES[activeKey];
+  let addons = 0;
+  const chosen = [];
+  document.querySelectorAll('.upgrade-select').forEach(s => {
+    const p = Number(s.value);
+    addons += p;
+    if(p > 0) chosen.push(s.options[s.selectedIndex].text);
+  });
+  const total = pkg.price + addons;
+  document.getElementById('sumName').textContent = pkg.name;
+  document.getElementById('sumBase').textContent = fmt(pkg.price);
+  document.getElementById('sumAddons').textContent = fmt(addons);
+  document.getElementById('sumTotal').innerHTML = fmt(total) + '<span> / month</span>';
+  document.getElementById('cardHeading').textContent = pkg.name;
+  const list = document.getElementById('addonList');
+  list.innerHTML = chosen.length === 0
+    ? '<li class="no-addon">No upgrades selected</li>'
+    : chosen.map(c => '<li class="addon-item">'+c+'</li>').join('');
+}
+
+document.querySelectorAll('.tier-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    activeKey = card.dataset.key;
+    renderUpgrades();
+  });
+});
+
+document.getElementById('whatsappBtn').addEventListener('click', () => {
+  const pkg = PACKAGES[activeKey];
+  let addons = 0;
+  const chosen = [];
+  document.querySelectorAll('.upgrade-select').forEach(s => {
+    const p = Number(s.value);
+    addons += p;
+    if(p > 0) chosen.push(s.options[s.selectedIndex].text);
+  });
+  const total = pkg.price + addons;
+  let msg = 'Hello! I\'d like to enquire about the *'+pkg.name+'* package.\n\n*Base Package:* '+fmt(pkg.price)+'/month\n';
+  if(chosen.length > 0) msg += '\n*Selected Upgrades:*\n'+chosen.map(c=>'• '+c).join('\n')+'\n';
+  msg += '\n*Total Investment:* '+fmt(total)+'/month\n\nPlease send me a detailed proposal. Thank you!';
+  window.open('https://wa.me/917340043567?text='+encodeURIComponent(msg),'_blank');
+});
+
+renderUpgrades();
+</script>
+</body>
+</html>

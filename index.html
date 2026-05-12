@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Thank You For Your Time</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+    :root{
+
+        --bg:#09070d;
+
+        --surface:#120f1c;
+        --surface2:#181427;
+        --surface3:#221c35;
+
+        --gold:#cba64d;
+        --gold2:#edd18a;
+        --gold3:#fff0bf;
+
+        --text:#f6f2ff;
+        --muted:#9b91b4;
+        --muted2:#c0b7d3;
+
+        --border:rgba(255,255,255,0.08);
+        --border2:rgba(255,255,255,0.14);
+
+        --green:#25D366;
+
+        --radius:24px;
+        --radius-sm:14px;
+    }
+
+    /* ===================================== */
+    /* RESET */
+    /* ===================================== */
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    html{
+        scroll-behavior:smooth;
+    }
+
+    body{
+
+        font-family:'DM Sans',sans-serif;
+
+        background:var(--bg);
+        color:var(--text);
+
+        min-height:100vh;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        padding:50px 20px 90px;
+
+        line-height:1.7;
+
+        background-image:
+        radial-gradient(circle at top left,
+        rgba(123,94,167,0.20),
+        transparent 35%),
+
+        radial-gradient(circle at top right,
+        rgba(201,168,76,0.10),
+        transparent 30%);
+    }
+
+    .container{
+        max-width:900px;
+        width:100%;
+        margin:auto;
+    }
+
+    /* ===================================== */
+    /* HERO */
+    /* ===================================== */
+
+    .hero{
+
+        text-align:center;
+
+        background:var(--surface);
+
+        border:1px solid var(--border);
+
+        border-radius:var(--radius);
+
+        padding:80px 40px;
+
+        position:relative;
+
+        overflow:hidden;
+    }
+
+    .hero::before{
+        content:"";
+
+        position:absolute;
+
+        inset:0;
+
+        background:
+        radial-gradient(circle at top,
+        rgba(201,168,76,0.08),
+        transparent 45%);
+
+        pointer-events:none;
+    }
+
+    .hero-eyebrow{
+
+        display:inline-block;
+
+        padding:8px 20px;
+
+        border-radius:999px;
+
+        border:1px solid rgba(201,168,76,0.30);
+
+        color:var(--gold);
+
+        font-size:0.76rem;
+        letter-spacing:0.18em;
+        text-transform:uppercase;
+
+        margin-bottom:28px;
+
+        background:rgba(201,168,76,0.05);
+    }
+
+    .hero h1{
+
+        font-family:'Cormorant Garamond',serif;
+
+        font-size:clamp(3rem,6vw,5.8rem);
+
+        line-height:1;
+
+        margin-bottom:18px;
+
+        letter-spacing:-1px;
+    }
+
+    .hero h1 span{
+
+        background:
+        linear-gradient(
+        135deg,
+        var(--gold),
+        var(--gold3)
+        );
+
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+    }
+
+    .hero p{
+
+        max-width:640px;
+
+        margin:auto;
+
+        color:var(--muted2);
+
+        font-size:1rem;
+    }
+
+    .divider{
+
+        width:90px;
+        height:2px;
+
+        margin:28px auto;
+
+        background:
+        linear-gradient(
+        to right,
+        transparent,
+        var(--gold),
+        transparent
+        );
+    }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <section class="hero">
+
+            <div class="hero-eyebrow">
+                Appreciation
+            </div>
+
+            <h1>
+                Thank You <span>For Your Time</span>
+            </h1>
+
+            <div class="divider"></div>
+
+            <p>
+                
+            </p>
+
+        </section>
+
+    </div>
+
+</body>
+</html>
